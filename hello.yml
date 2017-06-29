@@ -1,0 +1,13 @@
+---
+
+- hosts: localhost
+  sudo: yes
+  tasks:
+  - name: hello world
+    shell: "echo hello world"
+  - name: update apt
+    shell: "apt update"
+  - name: install apache2
+    apt: 
+      name: apache2
+  
