@@ -1,0 +1,29 @@
+- name: Install prereqs
+  apt: pkg={{ item }} state=latest install_recommends=no
+  with_items:
+    - curl
+    - openssh-server
+    - ca-certificates
+    - postfix
+    - apt-transport-https
+    - debian-archive-keyring
+
+- name: Add archive key
+  apt_key:
+    url: "https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey"
+
+- name: Add sources list
+  apt_repository:
+    repo: deb https://packages.gitlab.com/gitlab/{{ gitlab_repo }}/{{ ansible_lsb.id | lower }}/ {{ ansible_lsb.codename }} main
+    state: present
+    filename: 'gitlab_gitlab-ce'
+
+- name: Install latest package version
+  apt:
+    name: gitlab-ce
+  when: gitlab_version == "latest"
+
+- name: Install specific package version
+  apt:
+    name: gitlab-ce={{ gitlab_version }}
+  when: gitlab_version != "latest"

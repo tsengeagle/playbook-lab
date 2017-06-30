@@ -1,0 +1,4 @@
+- name: GitLab Testing
+  hosts: localhost
+  roles:
+    - gitlab
